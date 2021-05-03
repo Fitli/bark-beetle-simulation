@@ -3,8 +3,6 @@ globals [
   burned-trees    ;; how many have burned so far
 ]
 
-breed [fires fire]    ;; bright red turtles -- the leading edge of the fire
-breed [embers ember]  ;; turtles gradually fading from red to near black
 breed [beetles beetle]
 
 patches-own [num-beetles strength capacity]
@@ -17,17 +15,14 @@ to setup
   ask patches with [(random-float 100) < density]
     [ set pcolor green
       set num-beetles 0
-      set strength 80 + (random-float 20)
+      set strength minimal-strength + (random-float (100 - minimal-strength))
       set capacity 100
     ]
   ;; make a column of burning trees
   ask patches with [pxcor = min-pxcor and pcolor != black]
-    [set num-beetles 50]
+    [set num-beetles initial-attack]
   ask patches with [pcolor != black]
     [update-beetle]
-  ;ask patches with [pxcor = min-pxcor]
-  ;  [ ignite ]
-  ;; set tree counts
   set initial-trees count patches with [pcolor != black]
   set burned-trees 0
   reset-ticks
@@ -49,30 +44,22 @@ to move
   ask beetles
     [ let num number
       ask neighbors with [pcolor != black and pcolor != 31]
-        [ set num-beetles (num-beetles + num / 16) ]
+        [ set num-beetles (num-beetles + num * mobility / 100 / 8) ]
       ask patch-here
-      [ set num-beetles (num-beetles - num / 2) ]
+      [ set num-beetles (num-beetles - num * mobility / 100) ]
     ]
 end
 
 to proliferate
-  ask beetles with [number > 10]
+  ask beetles with [number > quantity-to-be-reproduced ]
     [
-      set number (number * 2)
+      set number (number * reproduction-coefficient)
       let num number
       ask patch-here
       [
         set num-beetles num
       ]
     ]
-end
-
-;; creates the fire turtles
-to ignite  ;; patch procedure
-  sprout-fires 1
-    [ set color red ]
-  set pcolor black
-  set burned-trees burned-trees + 1
 end
 
 to update
@@ -118,26 +105,11 @@ to update-tree
       [die]
   ]
 end
-
-
-;; achieve fading color effect for the fire as it burns
-to fade-embers
-  ask embers
-    [ set color color - 0.3  ;; make red darker
-      if color < red - 3.5     ;; are we almost at black?
-        [ set pcolor color
-          die ]
-  ]
-end
-
-
-; Copyright 1997 Uri Wilensky.
-; See Info tab for full copyright and license.
 @#$#@#$#@
 GRAPHICS-WINDOW
-210
+261
 10
-1518
+1569
 679
 -1
 -1
@@ -163,24 +135,24 @@ ticks
 
 SLIDER
 21
-39
+15
 193
-72
+48
 density
 density
 0
 100
-60.0
+86.0
 1
 1
 NIL
 HORIZONTAL
 
 BUTTON
-31
-105
-98
-138
+20
+299
+87
+332
 NIL
 setup
 NIL
@@ -194,10 +166,10 @@ NIL
 1
 
 BUTTON
-131
-109
-194
-142
+104
+300
+167
+333
 NIL
 go
 T
@@ -209,6 +181,77 @@ NIL
 NIL
 NIL
 1
+
+INPUTBOX
+29
+223
+190
+283
+reproduction-coefficient
+2.0
+1
+0
+Number
+
+SLIDER
+21
+57
+193
+90
+minimal-strength
+minimal-strength
+0
+100
+81.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+4
+182
+246
+215
+quantity-to-be-reproduced
+quantity-to-be-reproduced
+0
+100
+11.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+24
+142
+196
+175
+mobility
+mobility
+0
+100
+51.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+22
+100
+194
+133
+initial-attack
+initial-attack
+0
+100
+17.0
+1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
