@@ -17,18 +17,18 @@ to setup
   ask patches with [(random-float 100) < density]
     [ set pcolor green
       set num-beetles 0
-      set strength (random-float 100)
+      set strength 80 + (random-float 20)
       set capacity 100
     ]
   ;; make a column of burning trees
-  ask patches with [pxcor = min-pxcor and pcolor = green]
+  ask patches with [pxcor = min-pxcor and pcolor != black]
     [set num-beetles 50]
-  ask patches with [pcolor = green]
-    [update_beetle]
+  ask patches with [pcolor != black]
+    [update-beetle]
   ;ask patches with [pxcor = min-pxcor]
   ;  [ ignite ]
   ;; set tree counts
-  set initial-trees count patches with [pcolor = green]
+  set initial-trees count patches with [pcolor != black]
   set burned-trees 0
   reset-ticks
 end
@@ -37,18 +37,18 @@ to go
   if not any? turtles  ;; either fires or embers
     [ stop ]
   move
-  ask patches
-    [update_beetle]
+  ask patches with [num-beetles > 0]
+    [update]
   proliferate
-  ask patches
-    [update_beetle]
+  ask patches with [num-beetles > 0]
+    [update]
   tick
 end
 
 to move
   ask beetles
     [ let num number
-      ask neighbors with [pcolor = green]
+      ask neighbors with [pcolor != black and pcolor != 31]
         [ set num-beetles (num-beetles + num / 16) ]
       ask patch-here
       [ set num-beetles (num-beetles - num / 2) ]
@@ -56,7 +56,7 @@ to move
 end
 
 to proliferate
-  ask beetles with [number > 20]
+  ask beetles with [number > 10]
     [
       set number (number * 2)
       let num number
@@ -75,7 +75,12 @@ to ignite  ;; patch procedure
   set burned-trees burned-trees + 1
 end
 
-to update_beetle
+to update
+  update-beetle
+  update-tree
+end
+
+to update-beetle
   if num-beetles > capacity
   [
     set num-beetles capacity
@@ -98,8 +103,21 @@ to update_beetle
     set color 10 + num-beetles / 20
     set number num-beetles
   ]
+end
 
-  end
+to update-tree
+  if num-beetles > strength * 0.3 and pcolor = green
+  [
+    set pcolor brown
+  ]
+  if num-beetles >= strength * 0.9
+  [
+    set pcolor 31
+    set num-beetles 0
+    ask turtles-here
+      [die]
+  ]
+end
 
 
 ;; achieve fading color effect for the fire as it burns
@@ -108,7 +126,8 @@ to fade-embers
     [ set color color - 0.3  ;; make red darker
       if color < red - 3.5     ;; are we almost at black?
         [ set pcolor color
-          die ] ]
+          die ]
+  ]
 end
 
 
