@@ -29,15 +29,22 @@ to setup
 end
 
 to go
-  if not any? turtles  ;; either fires or embers
+  if not any? turtles
     [ stop ]
-  move
-  ask patches with [num-beetles > 0]
-    [update]
-  proliferate
-  ask patches with [num-beetles > 0]
-    [update]
+  breeding-season
   tick
+  breeding-season
+  ;move
+  tick
+  winter
+  tick
+end
+
+to breeding-season
+  move
+  update
+  proliferate
+  update
 end
 
 to move
@@ -62,9 +69,20 @@ to proliferate
     ]
 end
 
+to winter
+  ask patches with [num-beetles > 0]
+  [
+    set num-beetles (num-beetles - num-beetles * death-rate / 100)
+  ]
+  update
+end
+
 to update
-  update-beetle
-  update-tree
+  ask patches
+  [
+    update-beetle
+    update-tree
+  ]
 end
 
 to update-beetle
@@ -232,7 +250,7 @@ mobility
 mobility
 0
 100
-51.0
+74.0
 1
 1
 NIL
@@ -247,7 +265,22 @@ initial-attack
 initial-attack
 0
 100
-17.0
+64.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+34
+363
+206
+396
+death-rate
+death-rate
+0
+100
+24.0
 1
 1
 NIL
