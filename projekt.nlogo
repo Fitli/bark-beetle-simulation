@@ -1,6 +1,8 @@
 globals [
-  initial-trees   ;; how many trees (green patches) we started with
-  burned-trees    ;; how many have burned so far
+  healthy-trees
+  dead-trees
+  ill-trees
+  overall-beetles
 ]
 
 breed [beetles beetle]
@@ -21,10 +23,7 @@ to setup
   ;; make a column of burning trees
   ask patches with [pxcor = min-pxcor and pcolor != black]
     [set num-beetles initial-attack]
-  ask patches with [pcolor != black]
-    [update-beetle]
-  set initial-trees count patches with [pcolor != black]
-  set burned-trees 0
+  update
   reset-ticks
 end
 
@@ -34,7 +33,6 @@ to go
   breeding-season
   tick
   breeding-season
-  ;move
   tick
   winter
   tick
@@ -82,6 +80,18 @@ to update
   [
     update-beetle
     update-tree
+  ]
+  count-globals
+end
+
+to count-globals
+  set healthy-trees count patches with [pcolor = green]
+  set ill-trees count patches with [pcolor = brown]
+  set dead-trees count patches with [pcolor = 31]
+  set overall-beetles 0
+  ask patches
+  [
+    set overall-beetles overall-beetles + num-beetles
   ]
 end
 
@@ -152,10 +162,10 @@ ticks
 30.0
 
 SLIDER
-21
-15
-193
-48
+30
+400
+202
+433
 density
 density
 0
@@ -167,10 +177,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-20
-299
-87
-332
+28
+512
+95
+545
 NIL
 setup
 NIL
@@ -184,10 +194,10 @@ NIL
 1
 
 BUTTON
-104
-300
-167
-333
+118
+511
+181
+544
 NIL
 go
 T
@@ -201,10 +211,10 @@ NIL
 1
 
 INPUTBOX
-29
-223
-190
-283
+33
+233
+194
+293
 reproduction-coefficient
 2.0
 1
@@ -212,10 +222,10 @@ reproduction-coefficient
 Number
 
 SLIDER
-21
-57
-193
-90
+32
+358
+204
+391
 minimal-strength
 minimal-strength
 0
@@ -227,10 +237,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-4
-182
-246
-215
+28
+140
+202
+173
 quantity-to-be-reproduced
 quantity-to-be-reproduced
 0
@@ -242,10 +252,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-24
-142
-196
-175
+28
+96
+200
+129
 mobility
 mobility
 0
@@ -257,10 +267,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-22
-100
-194
-133
+28
+55
+200
+88
 initial-attack
 initial-attack
 0
@@ -272,19 +282,77 @@ NIL
 HORIZONTAL
 
 SLIDER
-34
-363
-206
-396
+28
+185
+200
+218
 death-rate
 death-rate
 0
 100
-24.0
+31.0
 1
 1
 NIL
 HORIZONTAL
+
+TEXTBOX
+17
+13
+167
+41
+Bark beetles
+20
+0.0
+1
+
+TEXTBOX
+22
+324
+172
+352
+Trees
+20
+0.0
+1
+
+PLOT
+1599
+59
+1799
+209
+trees
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"healthy trees" 1.0 0 -10899396 true "" "plot healthy-trees"
+"ill trees" 1.0 0 -6459832 true "" "plot ill-trees"
+"dead trees" 1.0 0 -14477296 true "" "plot dead-trees"
+
+PLOT
+1607
+260
+1807
+410
+bark beetles
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -8053223 true "" "plot overall-beetles"
 
 @#$#@#$#@
 ## WHAT IS IT?
