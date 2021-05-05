@@ -48,7 +48,7 @@ end
 to move
   ask beetles
     [ let num number
-      ask neighbors with [pcolor != black and pcolor != 31]
+      ask neighbors with [pcolor != black and pcolor != 31 and pcolor != red]
         [ set num-beetles (num-beetles + num * mobility / 100 / 8) ]
       ask patch-here
       [ set num-beetles (num-beetles - num * mobility / 100) ]
@@ -125,9 +125,16 @@ to update-tree
   [
     set pcolor brown
   ]
-  if num-beetles >= strength * 0.9
+  if num-beetles >= strength * 0.9 and (pcolor = brown or pcolor = green)
   [
     set pcolor 31
+    ;set num-beetles 0
+    ;ask turtles-here
+     ; [die]
+  ]
+  if num-beetles > strength * (1 - cut-down / 100)
+  [
+    set pcolor red
     set num-beetles 0
     ask turtles-here
       [die]
@@ -170,7 +177,7 @@ density
 density
 0
 100
-86.0
+85.0
 1
 1
 NIL
@@ -353,6 +360,21 @@ false
 "" ""
 PENS
 "default" 1.0 0 -8053223 true "" "plot overall-beetles"
+
+SLIDER
+30
+441
+202
+474
+cut-down
+cut-down
+0
+100
+11.0
+1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
