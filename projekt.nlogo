@@ -59,11 +59,14 @@ end
 to proliferate
   ask beetles with [number > quantity-to-be-reproduced ]
     [
-      set number (number * reproduction-coefficient)
-      let num number
-      ask patch-here
+      if pcolor = green
       [
-        set num-beetles num
+        set number (number * reproduction-coefficient)
+        let num number
+        ask patch-here
+        [
+          set num-beetles num
+        ]
       ]
     ]
 end
@@ -87,7 +90,7 @@ end
 
 to count-globals
   set healthy-trees count patches with [pcolor = green]
-  set ill-trees count patches with [pcolor = brown]
+  set ill-trees count patches with [pcolor = 53]
   set dead-trees count patches with [pcolor = 31]
   set cut-down-trees count patches with [pcolor = red]
   set overall-beetles 0
@@ -123,23 +126,23 @@ to update-beetle
 end
 
 to update-tree
-  ;if num-beetles > strength * 0.3 and pcolor = green
-  ;[
-  ;  set pcolor brown
-  ;]
-  if num-beetles >= strength * 0.9 and (pcolor = brown or pcolor = green)
+  if num-beetles >= strength and (pcolor = green or pcolor = 53)
   [
     set pcolor 31
     ;set num-beetles 0
     ;ask turtles-here
      ; [die]
   ]
-  if cut-down and num-beetles > strength * (1 - cut-down-treshold / 100) and pcolor = green
+  if num-beetles > strength * (cut-down-treshold / 100) and (pcolor = green or pcolor = 53)
   [
-    set pcolor red
-    set num-beetles 0
-    ask turtles-here
+    set pcolor 53
+    if cut-down
+    [
+      set pcolor red
+      set num-beetles 0
+      ask turtles-here
       [die]
+    ]
   ]
 end
 @#$#@#$#@
@@ -269,7 +272,7 @@ mobility
 mobility
 0
 100
-74.0
+52.0
 1
 1
 NIL
@@ -299,7 +302,7 @@ death-rate
 death-rate
 0
 100
-49.0
+36.0
 1
 1
 NIL
@@ -372,7 +375,7 @@ cut-down-treshold
 cut-down-treshold
 0
 100
-13.0
+83.0
 1
 1
 NIL
