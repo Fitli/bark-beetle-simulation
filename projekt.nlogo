@@ -76,7 +76,7 @@ to winter
 end
 
 to update
-  ask patches
+  ask patches with [pcolor != black]
   [
     update-beetle
     update-tree
