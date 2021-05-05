@@ -132,7 +132,7 @@ to update-tree
     ;ask turtles-here
      ; [die]
   ]
-  if num-beetles > strength * (1 - cut-down / 100)
+  if cut-down and num-beetles > strength * (1 - cut-down-treshold / 100)
   [
     set pcolor red
     set num-beetles 0
@@ -185,9 +185,9 @@ HORIZONTAL
 
 BUTTON
 28
-512
+528
 95
-545
+561
 NIL
 setup
 NIL
@@ -201,10 +201,10 @@ NIL
 1
 
 BUTTON
-118
-511
-181
-544
+119
+528
+182
+561
 NIL
 go
 T
@@ -237,7 +237,7 @@ minimal-strength
 minimal-strength
 0
 100
-81.0
+87.0
 1
 1
 NIL
@@ -297,7 +297,7 @@ death-rate
 death-rate
 0
 100
-31.0
+49.0
 1
 1
 NIL
@@ -366,15 +366,26 @@ SLIDER
 441
 202
 474
-cut-down
-cut-down
+cut-down-treshold
+cut-down-treshold
 0
 100
-11.0
+0.0
 1
 1
 NIL
 HORIZONTAL
+
+SWITCH
+58
+480
+174
+513
+cut-down
+cut-down
+1
+1
+-1000
 
 @#$#@#$#@
 ## WHAT IS IT?
