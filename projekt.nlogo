@@ -3,6 +3,7 @@ globals [
   dead-trees
   ill-trees
   overall-beetles
+  cut-down-trees
 ]
 
 breed [beetles beetle]
@@ -88,6 +89,7 @@ to count-globals
   set healthy-trees count patches with [pcolor = green]
   set ill-trees count patches with [pcolor = brown]
   set dead-trees count patches with [pcolor = 31]
+  set cut-down-trees count patches with [pcolor = red]
   set overall-beetles 0
   ask patches
   [
@@ -121,10 +123,10 @@ to update-beetle
 end
 
 to update-tree
-  if num-beetles > strength * 0.3 and pcolor = green
-  [
-    set pcolor brown
-  ]
+  ;if num-beetles > strength * 0.3 and pcolor = green
+  ;[
+  ;  set pcolor brown
+  ;]
   if num-beetles >= strength * 0.9 and (pcolor = brown or pcolor = green)
   [
     set pcolor 31
@@ -132,7 +134,7 @@ to update-tree
     ;ask turtles-here
      ; [die]
   ]
-  if cut-down and num-beetles > strength * (1 - cut-down-treshold / 100)
+  if cut-down and num-beetles > strength * (1 - cut-down-treshold / 100) and pcolor = green
   [
     set pcolor red
     set num-beetles 0
@@ -237,7 +239,7 @@ minimal-strength
 minimal-strength
 0
 100
-87.0
+73.0
 1
 1
 NIL
@@ -340,8 +342,8 @@ false
 "" ""
 PENS
 "healthy trees" 1.0 0 -10899396 true "" "plot healthy-trees"
-"ill trees" 1.0 0 -6459832 true "" "plot ill-trees"
 "dead trees" 1.0 0 -14477296 true "" "plot dead-trees"
+"cut down trees" 1.0 0 -2674135 true "" "plot cut-down-trees"
 
 PLOT
 1607
@@ -370,7 +372,7 @@ cut-down-treshold
 cut-down-treshold
 0
 100
-0.0
+13.0
 1
 1
 NIL
@@ -383,7 +385,7 @@ SWITCH
 513
 cut-down
 cut-down
-1
+0
 1
 -1000
 
