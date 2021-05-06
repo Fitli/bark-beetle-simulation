@@ -59,7 +59,7 @@ end
 to proliferate
   ask beetles with [number > quantity-to-be-reproduced ]
     [
-      if pcolor = green
+      if pcolor = green or pcolor = 53
       [
         set number (number * reproduction-coefficient)
         let num number
@@ -126,7 +126,7 @@ to update-beetle
 end
 
 to update-tree
-  if num-beetles >= strength and (pcolor = green or pcolor = 53)
+  if num-beetles >= strength * 0.9 and (pcolor = green or pcolor = 53)
   [
     set pcolor 31
     ;set num-beetles 0
@@ -388,7 +388,7 @@ SWITCH
 513
 cut-down
 cut-down
-0
+1
 1
 -1000
 
