@@ -4,12 +4,29 @@ globals [
   ill-trees
   overall-beetles
   cut-down-trees
+  gain
+  max-gain
+  loss
+  last-loss
 ]
 
 breed [beetles beetle]
 
 patches-own [num-beetles strength capacity]
 beetles-own [number]
+
+to same-init
+  set last-loss loss
+  ask beetles
+    [set number 0]
+  ask patches
+    [set num-beetles 0]
+  ask patches with [pcolor != black]
+    [set pcolor green]
+  ask patches with [pxcor = min-pxcor and pcolor != black]
+    [set num-beetles initial-attack]
+  update
+end
 
 to setup
   clear-all
@@ -40,8 +57,7 @@ to go
 end
 
 to breeding-season
-  repeat 10 [move update]
-
+  repeat 1 [move update]
   proliferate
   update
 end
@@ -94,6 +110,9 @@ to count-globals
   set dead-trees count patches with [pcolor = 31]
   set cut-down-trees count patches with [pcolor = red]
   set overall-beetles 0
+  set gain ill-trees * dead-tree-price + cut-down-trees * ill-tree-price + healthy-trees * 100
+  set max-gain count patches with [pcolor != black] * 100
+  set loss 1 - gain / max-gain
   ask patches
   [
     set overall-beetles overall-beetles + num-beetles
@@ -126,7 +145,7 @@ to update-beetle
 end
 
 to update-tree
-  if num-beetles >= strength * 0.9 and (pcolor = green or pcolor = 53)
+  if num-beetles >= strength and (pcolor = green or pcolor = 53)
   [
     set pcolor 31
     ;set num-beetles 0
@@ -182,7 +201,7 @@ density
 density
 0
 100
-84.0
+70.0
 1
 1
 NIL
@@ -228,7 +247,7 @@ INPUTBOX
 194
 293
 reproduction-coefficient
-100.0
+2.0
 1
 0
 Number
@@ -242,7 +261,7 @@ minimal-strength
 minimal-strength
 0
 100
-67.0
+55.0
 1
 1
 NIL
@@ -257,7 +276,7 @@ quantity-to-be-reproduced
 quantity-to-be-reproduced
 0
 100
-3.0
+11.0
 1
 1
 NIL
@@ -272,7 +291,7 @@ mobility
 mobility
 0
 100
-90.0
+73.0
 1
 1
 NIL
@@ -287,7 +306,7 @@ initial-attack
 initial-attack
 0
 100
-64.0
+100.0
 1
 1
 NIL
@@ -302,7 +321,7 @@ death-rate
 death-rate
 0
 100
-5.0
+4.0
 1
 1
 NIL
@@ -375,7 +394,7 @@ cut-down-treshold
 cut-down-treshold
 0
 100
-68.0
+39.0
 1
 1
 NIL
@@ -391,6 +410,107 @@ cut-down
 1
 1
 -1000
+
+SLIDER
+33
+588
+205
+621
+ill-tree-price
+ill-tree-price
+0
+100
+75.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+34
+628
+206
+661
+dead-tree-price
+dead-tree-price
+0
+100
+18.0
+1
+1
+NIL
+HORIZONTAL
+
+MONITOR
+209
+674
+266
+719
+Gain
+gain
+17
+1
+11
+
+TEXTBOX
+49
+565
+199
+586
+Price
+15
+0.0
+1
+
+MONITOR
+136
+673
+205
+718
+Max gain
+max-gain
+17
+1
+11
+
+MONITOR
+12
+673
+69
+718
+Loss
+loss
+17
+1
+11
+
+BUTTON
+195
+527
+287
+560
+same-init
+same-init\n
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+MONITOR
+70
+673
+134
+718
+Last loss
+last-loss
+17
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?
