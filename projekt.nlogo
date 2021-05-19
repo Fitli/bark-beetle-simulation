@@ -58,7 +58,7 @@ to go
 end
 
 to breeding-season
-  repeat 10 [move update tick]
+  repeat 50 [move update tick]
 
   proliferate
   update
@@ -188,12 +188,20 @@ to update-tree
     set pcolor 53
     if cut-down
     [
-      set pcolor red
-      set num-beetles 0
-      ask turtles-here
-      [die]
+      cut
+      if cut-down-neighbours
+      [
+        ask neighbors [cut]
+      ]
     ]
   ]
+end
+
+to cut
+  set pcolor red
+  set num-beetles 0
+  ask turtles-here
+  [die]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -425,20 +433,20 @@ cut-down-treshold
 cut-down-treshold
 0
 100
-85.0
+97.0
 1
 1
 NIL
 HORIZONTAL
 
 SWITCH
-58
-480
-174
-513
+0
+482
+101
+515
 cut-down
 cut-down
-1
+0
 1
 -1000
 
@@ -542,6 +550,17 @@ last-loss
 17
 1
 11
+
+SWITCH
+104
+483
+255
+516
+cut-down-neighbours
+cut-down-neighbours
+1
+1
+-1000
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -904,6 +923,83 @@ NetLogo 6.2.0
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
+<experiments>
+  <experiment name="experiment" repetitions="1" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>count turtles</metric>
+    <enumeratedValueSet variable="initial-attack">
+      <value value="73"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="density">
+      <value value="70"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="dead-tree-price">
+      <value value="18"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cut-down-treshold">
+      <value value="82"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cut-down">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="ill-tree-price">
+      <value value="75"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="quantity-to-be-reproduced">
+      <value value="62"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="death-rate">
+      <value value="75"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="mobility">
+      <value value="3"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="minimal-strength">
+      <value value="66"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="reproduction-coefficient">
+      <value value="20"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="experiment" repetitions="1" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>healthy-trees</metric>
+    <enumeratedValueSet variable="initial-attack">
+      <value value="73"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="density">
+      <value value="70"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="dead-tree-price">
+      <value value="18"/>
+    </enumeratedValueSet>
+    <steppedValueSet variable="cut-down-treshold" first="50" step="1" last="100"/>
+    <enumeratedValueSet variable="cut-down">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="ill-tree-price">
+      <value value="75"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="quantity-to-be-reproduced">
+      <value value="62"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="death-rate">
+      <value value="75"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="mobility">
+      <value value="3"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="minimal-strength">
+      <value value="66"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="reproduction-coefficient">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <steppedValueSet variable="random-seed" first="0" step="1" last="5"/>
+  </experiment>
+</experiments>
 @#$#@#$#@
 @#$#@#$#@
 default
