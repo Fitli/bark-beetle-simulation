@@ -12,7 +12,7 @@ globals [
 
 breed [beetles beetle]
 
-patches-own [num-beetles strength capacity]
+patches-own [num-beetles strength capacity pheromone atractivity]
 beetles-own [number]
 
 to same-init
@@ -37,6 +37,7 @@ to setup
       set num-beetles 0
       set strength minimal-strength + (random-float (100 - minimal-strength))
       set capacity 100
+      set atractivity 1 + random-float (1)
     ]
   ;; make a column of burning trees
   ask patches with [pxcor = min-pxcor and pcolor != black]
@@ -57,18 +58,48 @@ to go
 end
 
 to breeding-season
-  repeat 1 [move update]
+  repeat 10 [move update tick]
+
   proliferate
   update
 end
 
 to move
+  ask patches
+  [
+    let x (quantity-to-be-reproduced + capacity) / 2
+    set pheromone num-beetles
+    ifelse num-beetles > capacity or pcolor = black or pcolor = 31 or pcolor = red
+    [
+      set pheromone 0
+    ]
+    [
+      if num-beetles > x
+      [
+        set pheromone x - (num-beetles - x)/(capacity - x) * x
+      ]
+    ]
+    set pheromone pheromone * atractivity
+  ]
   ask beetles
     [ let num number
-      ask neighbors with [pcolor != black and pcolor != 31 and pcolor != red]
-        [ set num-beetles (num-beetles + num * mobility / 100 / 8) ]
+      let pheromone-sum 0
+      ask neighbors with [pcolor = green or pcolor = 53]
+        [ set pheromone-sum pheromone-sum + pheromone + mobility ]
       ask patch-here
-      [ set num-beetles (num-beetles - num * mobility / 100) ]
+        [ set pheromone-sum pheromone-sum + pheromone ]
+      ifelse pheromone-sum = 0
+      [
+        set num-beetles 0
+      ]
+      [
+        ask neighbors with [pcolor = green or pcolor = 53]
+        [ set num-beetles (num-beetles + num * ((pheromone + mobility) / pheromone-sum)) ]
+        ask patch-here
+        [ set num-beetles ((num-beetles - num) + num * (pheromone / pheromone-sum)) ]
+        ;ask patch-here
+        ;[ set num-beetles (num-beetles - num * mobility / 100) ]
+      ]
     ]
 end
 
@@ -120,10 +151,10 @@ to count-globals
 end
 
 to update-beetle
-  if num-beetles > capacity
-  [
-    set num-beetles capacity
-  ]
+  ;if num-beetles > capacity
+  ;[
+    ;set num-beetles capacity
+  ;]
   if not any? turtles-here and num-beetles > 0
   [
     sprout-beetles 1
@@ -247,7 +278,7 @@ INPUTBOX
 194
 293
 reproduction-coefficient
-2.0
+20.0
 1
 0
 Number
@@ -261,7 +292,7 @@ minimal-strength
 minimal-strength
 0
 100
-55.0
+66.0
 1
 1
 NIL
@@ -276,7 +307,7 @@ quantity-to-be-reproduced
 quantity-to-be-reproduced
 0
 100
-11.0
+62.0
 1
 1
 NIL
@@ -291,7 +322,7 @@ mobility
 mobility
 0
 100
-73.0
+3.0
 1
 1
 NIL
@@ -306,7 +337,7 @@ initial-attack
 initial-attack
 0
 100
-100.0
+73.0
 1
 1
 NIL
@@ -321,7 +352,7 @@ death-rate
 death-rate
 0
 100
-4.0
+75.0
 1
 1
 NIL
@@ -394,7 +425,7 @@ cut-down-treshold
 cut-down-treshold
 0
 100
-39.0
+85.0
 1
 1
 NIL
