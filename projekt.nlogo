@@ -13,7 +13,7 @@ globals [
 
 breed [beetles beetle]
 
-patches-own [num-beetles strength capacity pheromone atractivity morbidity]
+patches-own [num-beetles strength capacity pheromone atractivity]
 beetles-own [number]
 
 to same-init
@@ -177,23 +177,14 @@ to update-beetle
 end
 
 to update-tree
-  set morbidity morbidity + num-beetles * 0.01
-  set morbidity morbidity - 10
-  if morbidity < strength and (pcolor = 53)
-  [
-    set pcolor green
-    ;set num-beetles 0
-    ;ask turtles-here
-     ; [die]
-  ]
-  if morbidity >= strength and (pcolor = green or pcolor = 53)
+  if num-beetles >= strength and (pcolor = green or pcolor = 53)
   [
     set pcolor 31
     ;set num-beetles 0
     ;ask turtles-here
      ; [die]
   ]
-  if morbidity > strength * (cut-down-treshold / 100) and (pcolor = green or pcolor = 53)
+  if num-beetles > strength * (cut-down-treshold / 100) and (pcolor = green or pcolor = 53)
   [
     set pcolor 53
     if cut-down
@@ -208,7 +199,7 @@ to update-tree
 end
 
 to cut
-  set cut-gain cut-gain + dead-tree-price + (1 - morbidity / strength) * (100 - dead-tree-price)
+  set cut-gain cut-gain + dead-tree-price + (1 - num-beetles / strength) * (100 - dead-tree-price)
   set pcolor red
   set num-beetles 0
   ask turtles-here
@@ -251,7 +242,7 @@ density
 density
 0
 100
-78.0
+100.0
 1
 1
 NIL
