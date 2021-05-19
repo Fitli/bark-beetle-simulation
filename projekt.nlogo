@@ -40,8 +40,8 @@ to go
 end
 
 to breeding-season
-  move
-  update
+  repeat 10 [move update]
+
   proliferate
   update
 end
@@ -182,7 +182,7 @@ density
 density
 0
 100
-85.0
+84.0
 1
 1
 NIL
@@ -228,7 +228,7 @@ INPUTBOX
 194
 293
 reproduction-coefficient
-2.0
+100.0
 1
 0
 Number
@@ -242,7 +242,7 @@ minimal-strength
 minimal-strength
 0
 100
-73.0
+67.0
 1
 1
 NIL
@@ -257,7 +257,7 @@ quantity-to-be-reproduced
 quantity-to-be-reproduced
 0
 100
-11.0
+3.0
 1
 1
 NIL
@@ -272,7 +272,7 @@ mobility
 mobility
 0
 100
-52.0
+90.0
 1
 1
 NIL
@@ -302,7 +302,7 @@ death-rate
 death-rate
 0
 100
-36.0
+5.0
 1
 1
 NIL
@@ -375,7 +375,7 @@ cut-down-treshold
 cut-down-treshold
 0
 100
-83.0
+68.0
 1
 1
 NIL
