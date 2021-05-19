@@ -8,6 +8,7 @@ globals [
   max-gain
   loss
   last-loss
+  cut-gain
 ]
 
 breed [beetles beetle]
@@ -141,7 +142,7 @@ to count-globals
   set dead-trees count patches with [pcolor = 31]
   set cut-down-trees count patches with [pcolor = red]
   set overall-beetles 0
-  set gain ill-trees * dead-tree-price + cut-down-trees * ill-tree-price + healthy-trees * 100
+  set gain dead-trees * dead-tree-price + (healthy-trees + ill-trees) * 100 + cut-gain
   set max-gain count patches with [pcolor != black] * 100
   set loss 1 - gain / max-gain
   ask patches
@@ -198,6 +199,7 @@ to update-tree
 end
 
 to cut
+  set cut-gain cut-gain + dead-tree-price + (1 - num-beetles / strength) * (100 - dead-tree-price)
   set pcolor red
   set num-beetles 0
   ask turtles-here
@@ -240,7 +242,7 @@ density
 density
 0
 100
-70.0
+100.0
 1
 1
 NIL
@@ -446,24 +448,9 @@ SWITCH
 515
 cut-down
 cut-down
-0
+1
 1
 -1000
-
-SLIDER
-33
-588
-205
-621
-ill-tree-price
-ill-tree-price
-0
-100
-75.0
-1
-1
-NIL
-HORIZONTAL
 
 SLIDER
 34
@@ -474,7 +461,7 @@ dead-tree-price
 dead-tree-price
 0
 100
-18.0
+6.0
 1
 1
 NIL
