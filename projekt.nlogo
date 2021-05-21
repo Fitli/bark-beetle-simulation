@@ -1,3 +1,5 @@
+extensions [sound]
+
 globals [
   healthy-trees
   dead-trees
@@ -30,6 +32,7 @@ to same-init
 end
 
 to setup
+  sound:play-sound "kurovecsong.wav"
   clear-all
   set-default-shape turtles "circle"
   ;; make some green trees
@@ -199,7 +202,7 @@ to update-tree
 end
 
 to cut
-  set cut-gain cut-gain + dead-tree-price + (1 - num-beetles / strength) * (100 - dead-tree-price)
+  set cut-gain cut-gain + dead-tree-price + (1 - num-beetles / strength) * (healthy-tree-price - dead-tree-price)
   set pcolor red
   set num-beetles 0
   ask turtles-here
@@ -548,6 +551,21 @@ cut-down-neighbours
 1
 1
 -1000
+
+SLIDER
+34
+588
+206
+621
+healthy-tree-price
+healthy-tree-price
+0
+100
+50.0
+1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
