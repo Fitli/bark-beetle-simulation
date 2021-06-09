@@ -1,5 +1,3 @@
-extensions [sound]
-
 globals [
   healthy-trees
   dead-trees
@@ -20,6 +18,7 @@ beetles-own [number]
 
 to same-init
   set last-loss loss
+  set cut-gain 0
   ask beetles
     [set number 0]
   ask patches
@@ -32,7 +31,6 @@ to same-init
 end
 
 to setup
-  sound:play-sound "kurovecsong.wav"
   clear-all
   set-default-shape turtles "circle"
   ;; make some green trees
@@ -54,8 +52,10 @@ to go
   if not any? turtles
     [ stop ]
   breeding-season
+  log-trees
   tick
   breeding-season
+  log-trees
   tick
   winter
   tick
@@ -183,19 +183,21 @@ to update-tree
   if num-beetles >= strength and (pcolor = green or pcolor = 53)
   [
     set pcolor 31
-    ;set num-beetles 0
-    ;ask turtles-here
-     ; [die]
   ]
-  if num-beetles > strength * (cut-down-treshold / 100) and (pcolor = green or pcolor = 53)
-  [
-    set pcolor 53
-    if cut-down
+end
+
+to log-trees
+  ask patches with [pcolor != black][
+    if (pcolor = green or pcolor = 53) and ((num-beetles > strength * (cut-down-treshold / 100) and random-float (100) < sensitivity) or ((num-beetles <= strength * (cut-down-treshold / 100) and random-float (100) > specificity)))
     [
-      cut
-      if cut-down-neighbours
+      set pcolor 53
+      if cut-down
       [
-        ask neighbors [cut]
+        cut
+        if cut-down-neighbours
+        [
+          ask neighbors with [pcolor != black][cut]
+        ]
       ]
     ]
   ]
@@ -245,7 +247,7 @@ density
 density
 0
 100
-100.0
+80.0
 1
 1
 NIL
@@ -438,7 +440,7 @@ cut-down-treshold
 cut-down-treshold
 0
 100
-97.0
+6.0
 1
 1
 NIL
@@ -451,7 +453,7 @@ SWITCH
 515
 cut-down
 cut-down
-1
+0
 1
 -1000
 
@@ -470,17 +472,6 @@ dead-tree-price
 NIL
 HORIZONTAL
 
-MONITOR
-209
-674
-266
-719
-Gain
-gain
-17
-1
-11
-
 TEXTBOX
 49
 565
@@ -490,17 +481,6 @@ Price
 15
 0.0
 1
-
-MONITOR
-136
-673
-205
-718
-Max gain
-max-gain
-17
-1
-11
 
 MONITOR
 12
@@ -562,6 +542,36 @@ healthy-tree-price
 0
 100
 50.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+208
+383
+380
+416
+sensitivity
+sensitivity
+0
+100
+90.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+209
+425
+381
+458
+specificity
+specificity
+0
+100
+91.0
 1
 1
 NIL
