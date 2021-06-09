@@ -239,10 +239,10 @@ ticks
 30.0
 
 SLIDER
-30
-400
-202
-433
+28
+287
+200
+320
 density
 density
 0
@@ -254,10 +254,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-28
-528
-95
-561
+6
+469
+73
+502
 NIL
 setup
 NIL
@@ -271,10 +271,10 @@ NIL
 1
 
 BUTTON
-119
-528
-182
-561
+97
+469
+160
+502
 NIL
 go
 T
@@ -288,10 +288,10 @@ NIL
 1
 
 INPUTBOX
-33
-233
-194
-293
+29
+170
+201
+230
 reproduction-coefficient
 20.0
 1
@@ -299,10 +299,10 @@ reproduction-coefficient
 Number
 
 SLIDER
-32
-358
-204
-391
+28
+256
+200
+289
 minimal-strength
 minimal-strength
 0
@@ -315,9 +315,9 @@ HORIZONTAL
 
 SLIDER
 28
-140
-202
-173
+104
+200
+137
 quantity-to-be-reproduced
 quantity-to-be-reproduced
 0
@@ -330,9 +330,9 @@ HORIZONTAL
 
 SLIDER
 28
-96
+72
 200
-129
+105
 mobility
 mobility
 0
@@ -345,9 +345,9 @@ HORIZONTAL
 
 SLIDER
 28
-55
+38
 200
-88
+71
 initial-attack
 initial-attack
 0
@@ -359,10 +359,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-28
-185
-200
-218
+29
+137
+201
+170
 death-rate
 death-rate
 0
@@ -384,10 +384,10 @@ Bark beetles
 1
 
 TEXTBOX
-22
-324
-172
-352
+12
+231
+162
+259
 Trees
 20
 0.0
@@ -432,25 +432,25 @@ PENS
 "default" 1.0 0 -8053223 true "" "plot overall-beetles"
 
 SLIDER
-30
-441
-202
-474
+28
+319
+200
+352
 cut-down-treshold
 cut-down-treshold
 0
 100
-6.0
+68.0
 1
 1
 NIL
 HORIZONTAL
 
 SWITCH
-0
-482
-101
-515
+4
+426
+105
+459
 cut-down
 cut-down
 0
@@ -458,10 +458,10 @@ cut-down
 -1000
 
 SLIDER
-34
-628
-206
-661
+29
+564
+201
+597
 dead-tree-price
 dead-tree-price
 0
@@ -473,20 +473,20 @@ NIL
 HORIZONTAL
 
 TEXTBOX
-49
-565
-199
-586
+27
+506
+177
+527
 Price
 15
 0.0
 1
 
 MONITOR
-12
-673
-69
-718
+7
+618
+64
+663
 Loss
 loss
 17
@@ -494,10 +494,10 @@ loss
 11
 
 BUTTON
-195
-527
-287
-560
+173
+468
+265
+501
 same-init
 same-init\n
 NIL
@@ -511,10 +511,10 @@ NIL
 1
 
 MONITOR
-70
-673
-134
-718
+65
+618
+129
+663
 Last loss
 last-loss
 17
@@ -522,10 +522,10 @@ last-loss
 11
 
 SWITCH
-104
-483
-255
-516
+108
+427
+259
+460
 cut-down-neighbours
 cut-down-neighbours
 1
@@ -533,10 +533,10 @@ cut-down-neighbours
 -1000
 
 SLIDER
-34
-588
-206
-621
+29
+533
+201
+566
 healthy-tree-price
 healthy-tree-price
 0
@@ -548,30 +548,30 @@ NIL
 HORIZONTAL
 
 SLIDER
-208
-383
-380
-416
+28
+351
+200
+384
 sensitivity
 sensitivity
-0
+80
 100
-90.0
+95.0
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-209
-425
-381
-458
+28
+383
+200
+416
 specificity
 specificity
-0
+80
 100
-91.0
+95.0
 1
 1
 NIL
